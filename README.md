@@ -1,11 +1,39 @@
-# latex-template
+# lualatex-kobe-template
 
 LaTeX（ラテフ）は、レポートや学術論文などの文書作成に適したフリーの組版制御ソフトです。数式や図表の自由な配置編集や、自動的な目次や索引の作成、相互参照の構築など、文書作成のさまざまな機能を備えています。
-このレポジトリはlatexを使った論文作成のためのテンプレートです。
+
+このレポジトリは、本テンプレートは神戸大学市民工学部の論文様式に準拠した、lualatexを使った論文作成のためのテンプレートです。lualatexは、Lua言語を組み込んだLaTeXエンジンであり、従来のpLaTeXやupLaTeXに比べて柔軟性と拡張性が向上しているらしいです。
 
 ---
 
-## 1. 環境設定
+- [lualatex-kobe-template](#lualatex-kobe-template)
+  - [0. Overleafを用いる場合](#0-overleafを用いる場合)
+  - [1. VSCodeの環境設定](#1-vscodeの環境設定)
+    - [1.1 VSCodeとLatexのインストール](#11-vscodeとlatexのインストール)
+    - [1.2 VSCodeの拡張機能の追加](#12-vscodeの拡張機能の追加)
+    - [1.3 setting.jsonの設定](#13-settingjsonの設定)
+    - [1.4 OSの再起動](#14-osの再起動)
+  - [2. 運用方法](#2-運用方法)
+    - [2.1 本レポジトリのダウンロード](#21-本レポジトリのダウンロード)
+    - [2.2 latexのコンパイル](#22-latexのコンパイル)
+  - [3. 参考文献の作り方](#3-参考文献の作り方)
+    - [1. 手書きする](#1-手書きする)
+    - [2. Google ScholarからBibTeX形式でエクスポートする](#2-google-scholarからbibtex形式でエクスポートする)
+    - [3. 文献管理ツール（Zotero, Mendeleyなど）を用いる](#3-文献管理ツールzotero-mendeleyなどを用いる)
+  - [4. 各ディレクトリの説明](#4-各ディレクトリの説明)
+  - [5. 「、」「。」を「，」「．」で置き換える](#5-をで置き換える)
+    - [5.1 環境設定を使う](#51-環境設定を使う)
+
+
+## 0. Overleafを用いる場合
+
+[**Overleaf**](https://ja.overleaf.com/)とは、ChromeやSafariなどのWebブラウザで起動するクラウド型Latexエディタである。基本無料で利用することができ、ローカルPCの環境構築は不要。
+
+Overleafを用いる場合、以下の記事を参考する。
+
+- [いますぐLatexを始めたいならOverleafを使おう](https://qiita.com/nagampere/items/7407a0b7952b0e3708ed)
+
+## 1. VSCodeの環境設定
 
 VS CodeはLaTeX環境としておすすめ。「LaTeX Workshop」によるリアルタイムPDFプレビュー、自動補完、エラー表示が可能で、効率的に作業が進められる。
 さらに、軽量で動作が速く、拡張機能やAI連携、Gitによるバージョン管理も可能。
@@ -78,24 +106,34 @@ setting.jsonを編集し、拡張機能「Latex Workshop」の詳細設定を行
 
 1. 左下の歯車マークから「設定」を開き、右上の「設定(JSON)を開く」をクリック
 2. settings.jsonが開かれるので、本レポジトリの同名ファイルの中身をコピペする。
+3. 
 
 LaTeX Workshop ではビルド設定を「Tool」と「Recipe」という2つで考える。
 
 - Tool: 実行される1つのコマンド。コマンド (command) と引数 (args) で構成される。("latex-workshop.latex.recipes" で定義)
 - Recipe: Tool の組み合わわせを定義する。Tool の組み合わせ (tools) で構成される。("latex-workshop.latex.tools" で定義)
 
-Toolの役割は以下の通り。
+Toolの主要なコマンドは以下の通り。
 
-- uplatex: 日本語対応のLatexコンパイラ
-- 
-
-※ LuaLaTeXという最新のコンパイラがリリースされており、pLaTex/upLaTexから移行しつつあるが、過去ファイルとの互換性から(u)platexを引き続き利用しても問題ない。
+- `lualatex`: LuaLaTeXエンジンで.texファイルをコンパイルし、PDFを生成する。
+- `biber`: 参考文献データベース(.bibファイルなど)を処理し、引用情報を生成する。
+- `bibtex`: biberと同様に参考文献データベースを処理するが、古典的な環境で互換性を重視する場合に使用される。
+- `pdflatex`: 英語のみで最小構成のLaTexエンジンで、luaLaTex同様に.texファイルをコンパイルする。
+- `platex`: 日本語組版に特化したLaTeXエンジンで、luaLaTex同様に.texファイルをコンパイルする。
+- `pbibtex`: platex用の参考文献データベースを処理する。
+- `dvipdfmx`: DVIファイルをPDFに変換する。
 
 Windowsの場合は[こちら](https://qiita.com/fuku_uma/items/e5ad46125a9612320273#:~:text=VSCode%E3%81%AE%E8%A8%AD%E5%AE%9A-,Windows%E3%81%AE%E5%A0%B4%E5%90%88,-Mac%E3%81%AE%E5%A0%B4%E5%90%88)を参考にする。
 
 参考
 - [【LaTeX】初心者向けエンジンと文書クラスについて](https://qiita.com/kou-JP/items/60b63963f2ae7fdefddd)
-- [](https://www.metaphysica.info/2022/outdated-uplatex/)
+
+
+---
+
+### 1.4 OSの再起動
+
+新たにパスの追加やsetting.jsonの編集をした場合は、念の為OSを再起動しておくと良い。
 
 ---
 
@@ -103,14 +141,14 @@ Windowsの場合は[こちら](https://qiita.com/fuku_uma/items/e5ad46125a961232
 
 ### 2.1 本レポジトリのダウンロード
 
-本レポジトリ「latex-template」をダウンロードする方法は大きく2つ。
+本レポジトリ「lualatex-kobe-template」をダウンロードする方法は大きく2つ。
 
 1. zipファイルを直接ダウンロードする
-   1. [latex-template](https://github.com/nagampere/latex-template)にアクセスする
+   1. [lualatex-kobe-template](https://github.com/nagampere/lualatex-kobe-template)にアクセスする
    2. 緑色の「< > Code▽」をクリックし、「Download ZIP」を実行
-2. 【おすすめ】Githubからフォーク(forkする)
-   1. [latex-template](https://github.com/nagampere/latex-template)にアクセスする
-   2. 「< > Code▽」の右上にある「Fork」をクリックし、latex-templateをコピーした新たなレポジトリ(ホストは自身)を作成する
+2. Githubからフォーク(forkする)
+   1. [lualatex-kobe-template](https://github.com/nagampere/lualatex-kobe-template)にアクセスする
+   2. 「< > Code▽」の右上にある「Fork」をクリックし、lualatex-kobe-templateをコピーした新たなレポジトリ(ホストは自身)を作成する
    3. 新たなレポジトリをgit cloneでローカルに読み込む
 
 **何故Githubを使った方が良いのか？**
@@ -156,101 +194,139 @@ settings.jsonの設定で、保存時に自動でPDFが保存される。
 
 ## 3. 参考文献の作り方
 
-### 3.1 BiBTeXの使い方
+引用文献は、3_backmatter/references.bibにBibTeX形式で追加する。追加方法は以下の3通り。
 
-BiBTeXとは、Latexの参考文献用のデータベースで、通常.bibファイルで管理する。bibファイルを直接編集することはなく、ZoteroやPapershipでまとめて出力する。latex内では本文中で引用された文献のみが目録に登録されるので、細かい文献管理が不要になる。
+1. **手書きする**
+2. **Google ScholarからBibTeX形式でエクスポートする**
+3. **文献管理ツール（Zotero, Mendeleyなど）を用いる**
 
-参考
+### 1. 手書きする
 
-- [BiBTeXとは](https://qiita.com/SUZUKI_Masaya/items/14f9727845e020f8e7e9)
-- [VSCode + Zotero + BibTeXによる論文執筆ワークフロー](https://zenn.dev/nicetak/articles/zotero-tex-bibtex)
+3_backmatter/references.bibは、`article`(学術論文)・`book`(書籍)・`incollection`(書籍セクション)・`misc`(その他)の4種のBibTeXエントリに対応している。これを参考にして、引用文献を手書きで追加する。
+
+**また、日本語の文献を追加する場合は、必ず`langid = {japanese}`を指定する。これにより、日本語特有の表記ルール（著者名の順序、句読点など）が適用される。**
+
+```latex
+@article{misono2014, %論文のCitation Key（識別子）
+  author  = {{御園, 一} and {山田, 隆司}}, % 著者名（姓と名は連結させるかカンマを打つ）
+  title   = {日本の社会資本が地域別生産性に与える効果の再検証}, % 論文タイトル
+  journal = {日本大学経済学部経済集志}, % 雑誌名
+  volume  = {83}, % 【任意】巻数
+  number  = {2}, % 【任意】号数
+  pages   = {107--132}, % 【任意】ページ範囲
+  year    = {2014}, % 発行年
+  langid  = {japanese} % 言語設定（日本語の場合はjapanese/jpn/jp, 英語の場合は不要）
+}
+
+@book{mitsui2010, % 書籍のCitation Key（識別子）
+  author  = {W.S. ロースター}, % 著者名
+  translator  = {三井, 清}, % 【任意】翻訳者名
+  title   = {社会資本整備の経済効率性からみた公共投資のあり方}, % 書籍タイトル
+  publisher = {学文社}, % 出版社
+  edition = {2}, % 【任意】版数
+  volume  = {9}, % 【任意】巻数
+  pages   = {302}, % 【任意】ページ範囲
+  year    = {2010}, % 発行年
+  langid  = {japanese} % 言語設定（日本語の場合はjapanese/jpn/jp, 英語の場合は不要）
+}
+
+@incollection{kim2013, % 書籍セクションのCitation Key（識別子）
+  author  = {Kim, Minsoo}, % 著者名
+  title   = {The effect of public capital on total factor productivity in East Asia}, % セクションタイトル
+  booktitle = {Infrastructure and economic development}, % 書籍タイトル
+  publisher = {Elsevier}, % 出版社
+  edition = {2}, % 【任意】版数
+  volume = {3}, % 【任意】巻数
+  pages   = {137--156}, % 【任意】ページ範囲
+  year    = {2013}, % 発行年
+  langid  = {japanese} % 言語設定（日本語の場合はjapanese/jpn/jp, 英語の場合は不要）
+}
+
+@misc{yamano2024, % その他のCitation Key（識別子）
+  author  = {山野, 浩一}, % 著者名
+  title   = {公共投資の経済効果に関する実証分析の動向}, % タイトル
+  journal = {日本都市研究所}, % 【任意】誌名(webサイトのタイトル),
+  year    = {2024}, % 【任意】発行年
+  howpublished = {https://www.stat.go.jp/data/chiri/1-1.html}, % 【任意】URL
+  urldate = {2025-01-21}, % 【任意】アクセス日
+  langid  = {japanese} % 言語設定（日本語の場合はjapanese/jpn/jp, 英語の場合は不要）
+}
+```
+
+### 2. Google ScholarからBibTeX形式でエクスポートする
+
+Google Scholarでは、論文や書籍のBibTeX形式での引用情報を簡単に取得できる。手順は以下の通り。
+
+1. [Google Scholar](https://scholar.google.com/)にアクセス。
+2. 検索バーに引用したい文献のタイトルや著者名を入力して検索。
+3. 検索結果から目的の文献を見つけ、引用マーク（"）をクリック。
+4. 表示される引用形式の中から「BibTeX」を選択。
+5. 表示されたBibTeXコードをコピーし、3_backmatter/references.bibファイルに貼り付け。
+
+### 3. 文献管理ツール（Zotero, Mendeleyなど）を用いる
+
+文献管理ツールとは、論文や書籍の情報を一元管理し、引用情報を簡単に取得できるソフトウェアである。代表的なツールにはZoteroやMendeleyがある。ソフトウェア内で作成した文献リストをBibTeX形式でエクスポートし、3_backmatter/references.bibとして保存できる。ソフトウェア内で更新された情報は、自動で.bibファイルに反映されるため、引用情報の管理が非常に楽になる。
+
+**注意点** : ZoteroやMendeleyで日本語文献を管理する場合、デフォルトの設定では正しい「Citation Key」が生成されない。例えば、漢字を中国語として変換した謎の英語がデフォルトで出力される。
+例：「有村(2020)」→「youcun2020」
+
+日本語対応のための設定を含め、詳しくはコチラの記事を参考
+
+- [日本語文献用のBetter BibTeXの引用キー（citation key）の設定](https://qiita.com/shiro_takeda/items/dfb857e69aa8ed2cc977)
 - [Zoteroから参考文献リストを自動エクスポートする (PandocとZoteroで参考文献：前編)](https://zenn.dev/sky_y/articles/pandoc-advent-2020-bib1)
-
-### 3.2 natbibライブラリの使い方
-
-natbibとは、文献管理を目的としたlatexライブラリの一つで、```\usepackage{natbib}```で利用可能になる。　　
-```\usepackage[options]{natbib}```や```\setcitestyle{options}```で設定ができる。
-
-初期設定
-
-- ```\renewcommand{\bibname}{参考文献}```
-  - 文献目録のタイトルを「参考文献」にする
-- ```\setcitestyle{super,sort&compress,open={},close={)}}```
-  - "super"で、右肩上がり数字(山田 (2020) <sup>3\)</sup> )にする。
-  - "open={},close={)}"で、「3\)」のスタイルにする。
-- ```\setcitestyle{authoryear}```
-- ```\bibliographystyle{3_backmatter/kucivil.bst} ```
-  - 設定の基準は[経済学におけるBibTeXの利用](https://qiita.com/shiro_takeda/items/92adf0b20c501548355e)
-  - 神戸大学市民工学の書式に変更
-
-参考
-
-- [Natbibチュートリアル: BibTeXを使ったLaTeXでの参考文献管理](https://bibtex.eu/ja/natbib/)
-- [natbibチートシート](https://gking.harvard.edu/files/natnotes2.pdf)
-- [【LaTeX】BibTeXのスタイル76個一覧](https://mathlandscape.com/latex-bibstyles/)
-
----
-
-
-参考
-
-- [VSCode for macのLaTeX Workshopで自動整形できるようにする\(latexindent\)](https://qiita.com/dwatanabee/items/2b9c79c0c5fced3aae22)
-- [VSCodeでLaTeXの句読点を楽に置換する](https://qiita.com/goemontech/items/f2e4d79bb1288652ba69)
 
 ---
 
 ## 4. 各ディレクトリの説明
 
 ```{bash}
-latex-template
-├── main.tex                   # 本文のメインファイル（全体をまとめる）
-├── digest.tex                 # 要旨のメインファイル
+lualatex-kobe-template
 ├── 0_preamble
+│   ├── macros.tex             # カスタムコマンド・マクロ定義
 │   ├── packages.tex           # 使用するパッケージ
-│   ├── settings.tex           # ドキュメント設定（章構成、引用スタイルなど）
-│   └── macros.tex             # カスタムコマンド・マクロ定義
+│   └── settings.tex           # ドキュメント設定
 ├── 1_frontmatter
-│   ├── title.tex              # タイトル
 │   ├── abstractEN.tex         # 英文要旨
 │   ├── abstractJP.tex         # 和文要旨
-│   └── contents.tex           # 目次・図表目次
-├── 2_mainmatter                 # 各章ごとの内容
-│   ├── chapter1.tex
-│   ├── chapter2.tex
-│   ├── chapter3.tex
-│   ├── chapter4.tex
-│   └── chapter5.tex
+│   ├── contents.tex           # 目次・図表目次
+│   └── title.tex              # タイトル
+├── 2_mainmatter
+│   ├── chapter1.tex           # 第1章の内容
+│   ├── chapter2.tex           # 第2章の内容
+│   ├── chapter3.tex           # 第3章の内容
+│   ├── chapter4.tex           # 第4章の内容
+│   └── chapter5.tex           # 第5章の内容
 ├── 3_backmatter
-│   ├── citations.tex          # 参考文献リスト
-│   ├── kucivil.bst            # 引用スタイルの設定ファイル
-│   ├── references.bib         # bibtexファイル
+│   ├── acknowledgements.tex   # 謝辞
 │   ├── appendix.tex           # 付録
-│   └── acknowledgements.tex   # 謝辞
-├── figure                     # 図専用のディレクトリ
-│   └── figure_sample.png
-├── table                      # 表専用のディレクトリ
-│   ├── table_sample1.tex
-│   └── table_sample2.tex
-├── digest                     # 要旨の設定ファイル
-│   └── settings.tex
-├── output
+│   ├── citations.tex          # 参考文献リスト
+│   ├── kucivil.bbx            # 引用文献リストの設定ファイル（神戸大学市民工学標準）
+│   ├── kucivil.cbx            # 引用番号スタイルの設定ファイル（神戸大学市民工学標準）
+│   └── references.bib         # 参考文献リスト
+├── digest
+│   └── settings.tex           # 要旨のドキュメント設定
+├── figure                     # 図専用
 ├── log                        # ログファイルや中間生成物
+├── output                     # 出力ファイル
+├── table                      # 表専用
 ├── template                   # テンプレート関連
-├── main.pdf            　      # 本文の最終出力物(ignore)
+├── README.md                  # はじめに読むファイル
 ├── digest.pdf                 # 要旨の最終出力物(ignore)
-├── settings.json              # settings
-└── README.md
+├── digest.tex                 # 要旨のメインファイル
+├── main.pdf                   # 本文の最終出力物(ignore)
+├── main.tex                   # 本文のメインファイル（全体をまとめる）
+└── settings.json              # VSCodeのsettingsファイル
 ```
 
 ---
 
 
-## 4. 「、」「。」を「，」「．」で置き換える
+## 5. 「、」「。」を「，」「．」で置き換える
 
 日本語で理系論文を書く際、「、」「。」を「，」「．」で置き換えることが一般的である。
 ありがちな変換方法として、「、」「。」を対象に検索&置換があるが、予め楽に変換できるように設定することをオススメする。
 
-### 4.1 環境設定を使う
+### 5.1 環境設定を使う
 
 1. 「システム環境設定」を開く
 2. 「キーボード」タブを開く
@@ -261,81 +337,3 @@ latex-template
 
 - [M1 MacBookを買ったので設定しながらのメモ（２）](https://zenn.dev/dannchu/articles/d595b55f0864ab)
 
-### 4.2 (応用編)latexindentでショートカットを設定する
-
-1. latexindentのインストール
-2. settings.jsonの編集(設定済み)
-
-   ```json
-   {
-      "latex-workshop.formatting.latex": "latexindent", 
-      "latex-workshop.formatting.latexindent.path": "/usr/local/bin/latexindent",
-      "latex-workshop.formatting.latexindent.args": [
-         "-c",
-         "%DIR%/",
-         "%TMPFILE%",
-         "-l",
-         "%DIR%/latexindent",
-         "-r"
-   ]
-   }
-   ```
-
-3. ディレクトリ内にlatexindent.yamlファイルを作る(設定済み)
-4. 対象ファイル内でフォーマットを実行
-   - 右クリック→「ドキュメントのフォーマット」
-   - Shift + option + F
-
-### 1.2 Latexmkrcの設定
-
-(スキップしても動作する可能性あり。設定しておけば安心。)  
-ターミナルで以下を実行する。
-
-```bash
-# ホームディレクトリに移動
-cd ~
-# .latexmkrcファイルの作成
-touch .latexmkrc
-# 作成した.latexmkrcファイルを編集
-open .latexmkrc
-```
-
-テキストエディタ等で開かれた.latexmkrcファイルに、以下のコマンドをコピペして保存する。
-
-```bash{filename=".latexmkrc"}
-# 通常の LaTeX ドキュメントのビルドコマンド
-$latex = 'uplatex %O -kanji=utf8 -no-guess-input-enc -synctex=1 -interaction=nonstopmode %S';
-# pdfLaTeX のビルドコマンド
-$pdflatex = 'pdflatex %O -synctex=1 -interaction=nonstopmode %S';
-# LuaLaTeX のビルドコマンド
-$lualatex = 'lualatex %O -synctex=1 -interaction=nonstopmode %S';
-# XeLaTeX のビルドコマンド
-$xelatex = 'xelatex %O -no-pdf -synctex=1 -shell-escape -interaction=nonstopmode %S';
-# Biber, BibTeX のビルドコマンド
-$biber = 'biber %O --bblencoding=utf8 -u -U --output_safechars %B';
-$bibtex = 'upbibtex %O %B';
-# makeindex のビルドコマンド
-$makeindex = 'upmendex %O -o %D %S';
-# dvipdf のビルドコマンド
-$dvipdf = 'dvipdfmx %O -o %D %S';
-# dvipd のビルドコマンド
-$dvips = 'dvips %O -z -f %S | convbkmk -u > %D';
-$ps2pdf = 'ps2pdf.exe %O %S %D';
-
-# PDF の作成方法を指定するオプション
-## $pdf_mode = 0; PDF を作成しない。
-## $pdf_mode = 1; $pdflatex を利用して PDF を作成。
-## $pdf_mode = 2; $ps2pdf を利用して .ps ファイルから PDF を作成。
-## pdf_mode = 3; $dvipdf を利用して .dvi ファイルから PDF を作成。
-## $pdf_mode = 4; $lualatex を利用して .dvi ファイルから PDF を作成。
-## $pdf_mode = 5; xdvipdfmx を利用して .xdv ファイルから PDF を作成。
-$pdf_mode = 3;
-
-# PDF viewer の設定
-$pdf_previewer = "start %S";  # "start %S": .pdf に関連付けられた既存のソフトウェアで表示する。
-
-## Windows では SyncTeX(PDF をビューアーで開いたまま中身の更新が可能で更新がビューアーで反映される機能) が利用できる SumatraPDF 等が便利。
-## ぜひ SyncTeX 機能のあるビューアーをインストールしよう。
-## SumatraPDF: https://www.sumatrapdfreader.org/free-pdf-reader.html
-## $pdf_previewer = 'SumatraPDF -reuse-instance';
-```
