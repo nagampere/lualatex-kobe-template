@@ -1,0 +1,21 @@
+\ProvidesFile{kucivil.cbx}[2025/12/23 KU Civil biblatex citation style (author-year)]
+
+% Citation: numeric style
+\RequireCitationStyle{numeric}
+
+% 引用順はアルファベット順ではなく出現順にする
+\ExecuteBibliographyOptions{sorting=none}
+
+% カッコのスタイルを設定する
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}} % [see] など
+  {%
+    \textsuperscript{%
+      \printfield{labelnumber}%
+      \iflastcitekey{)}{,}%
+    }%
+  }
+  {} % ← 文献間セパレータはここでは使わない（最後判定で処理）
+  {\usebibmacro{postnote}} % [p.~10] など
+
+

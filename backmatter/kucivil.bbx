@@ -1,0 +1,179 @@
+\ProvidesFile{kucivil.bbx}[2025/12/23 KU Civil biblatex bibliography style (numbered, author-year formatted)]
+\RequireBibliographyStyle{numeric}
+
+%%% helper macros %%%
+\newbibmacro*{ifjplang}{%
+  \ifboolexpr{
+  % langid または language フィールドが日本語を示す場合  
+  test {\iffieldequalstr{langid}{japanese}}
+    or test {\iffieldequalstr{langid}{jp}}
+    or test {\iffieldequalstr{langid}{jpn}}
+    or test {\iffieldequalstr{langid}{ja}}
+    or test {\iffieldequalstr{langid}{ja-JP}}
+    or test {\iffieldequalstr{langid}{ja_JP}}
+    or test {\iffieldequalstr{langid}{jp-JP}}
+    or test {\iffieldequalstr{langid}{jp_JP}}
+    or test {\iffieldequalstr{langid}{jpn-JP}}
+    or test {\iffieldequalstr{langid}{jpn_JP}}
+    or test {\iffieldequalstr{language}{japanese}}
+    or test {\iffieldequalstr{language}{jp}}
+    or test {\iffieldequalstr{language}{jpn}}
+    or test {\iffieldequalstr{language}{ja}}
+    or test {\iffieldequalstr{language}{ja-JP}}
+    or test {\iffieldequalstr{language}{ja_JP}}
+    or test {\iffieldequalstr{language}{jp-JP}}
+    or test {\iffieldequalstr{language}{jp_JP}}
+    or test {\iffieldequalstr{language}{jpn-JP}}
+    or test {\iffieldequalstr{language}{jpn_JP}}
+  }
+}
+
+%%% bibliography formatting %%%
+
+% 引用番号を「1)」の形式にする
+\DeclareFieldFormat{labelnumberwidth}{#1)}
+
+% author のフォーマットを日本語と英語に分けてカスタマイズ
+\DeclareNameFormat{author}{%
+  \usebibmacro{ifjplang}
+    {%
+      % 日本語：「國分正胤，岡村甫」のように表示
+      \namepartfamily\namepartgiven%
+      \ifnum\value{listcount}<\value{liststop}%
+        \printtext{，}%
+      \fi
+    }
+    {%
+      % 英語：「Gresho, P.M., Lee, R.L. and Upson, C.D.」のように表示
+      \namepartfamily\addcomma\space\namepartgiveni%
+      \ifnum\value{listcount}<\value{liststop}%
+        \addcomma\space
+      \fi
+    }%
+}
+
+% book の translator のフォーマットを日本語と英語に分けてカスタマイズ
+\DeclareNameFormat[book]{translator}{%
+  \usebibmacro{ifjplang}
+    {%
+      % 日本語：「山田太郎，鈴木一郎」のように表示
+      \namepartfamily\namepartgiven%
+      \ifnum\value{listcount}<\value{liststop}%
+        \printtext{，}%
+      \fi
+    }
+    {%
+      % 英語：「Taro Yamada and Ichiro Suzuki」のように表示
+      \namepartgiveni\space\namepartfamily%
+      \ifnum\value{listcount}<\value{liststop}%
+        \addcomma\space
+      \fi
+    }%
+}
+
+% articleのtitle の “ ”や太字 を消す
+\DeclareFieldFormat[article]{title}{#1}
+% book の title のフォーマットを日本語と英語に分けてカスタマイズ
+\DeclareFieldFormat[book]{title}{%
+  \usebibmacro{ifjplang}
+    % 日本語：装飾なし（太字・イタリック無効）
+    {#1}
+    % 英語：イタリック維持（太字は付けない）
+    {\mkbibemph{#1}}  
+}
+% misc の title の “ ”や太字 を消す
+\DeclareFieldFormat[misc]{title}{#1}
+
+% journaltitle のフォーマットを日本語と英語に分けてカスタマイズ
+\DeclareFieldFormat{journaltitle}{%
+  \usebibmacro{ifjplang}
+    % 日本語：装飾なし（太字・イタリック無効）
+    {#1}
+    % 英語：イタリック維持（太字は付けない）
+    {\mkbibemph{#1}}  
+}
+
+% howpublished(URL) のフォーマットを、文書中で折り返して見やすくし、文字タイプを通常にする
+\DeclareFieldFormat{howpublished}{\nolinkurl{#1}}
+
+% misc の urldate のフィールドを有効化
+\DeclareDatamodelFields[type=field, datatype=literal]{urldate}
+% misc の urldate を 「(visited on 2025-01-21)」からデータを取り出す
+\DeclareFieldFormat{urldate}{#1}
+
+% 末尾の既定ピリオド "." を無効化（自分で "．" を出すため）
+\renewcommand*{\finentrypunct}{}
+
+
+%%% bibliography drivers %%%
+% @article を「著者：タイトル, 誌名, Vol. xx, No. x, pp. yy–zz, yyyy．」
+\DeclareBibliographyDriver{article}{%
+  \printnames{author}%
+  \printtext{：}\space
+  \printfield{title}%
+  \addcomma\space
+  \printfield{journaltitle}%
+  \iffieldundef{volume}{}{%
+    \addcomma\space
+    \printtext{Vol.}\printfield{volume}%
+  }%
+  \iffieldundef{number}{}{%
+    \addcomma\space
+    \printtext{No.}\printfield{number}%
+  }%
+  \iffieldundef{pages}{}{%
+    \addcomma\space
+    \printfield{pages}%
+  }%
+  \addcomma\space
+  \printfield{year}%
+  \printtext{．}%
+  \finentry
+}
+
+% @book を「著者（訳者）：タイトル, 出版社, pp. yy–zz, yyyy．」
+\DeclareBibliographyDriver{book}{%
+  \printnames{author}%
+  \ifnameundef{translator}{}{% 
+    \printtext{（}%
+    \printnames{translator}%
+    \printtext{訳）}%
+  }%
+  \printtext{：}\space
+  \printfield{title}%
+  \addcomma\space
+  \printlist{publisher}%
+  \iffieldundef{pages}{}{%
+    \addcomma\space
+    \printfield{pages}%
+  }%
+  \addcomma\space
+  \printfield{year}%
+  \printtext{．}%
+  \finentry
+}
+
+% @misc を「著者：タイトル, 誌名(webサイトのタイトル), yyyy, URL, （参照 yyyy-mm-dd）．」
+\DeclareBibliographyDriver{misc}{%
+  \printnames{author}%
+  \printtext{：}\space
+  \printfield{title}%
+  \iffieldundef{journaltitle}{}{%
+    \addcomma\space
+    \printfield{journaltitle}%
+  }%
+  \iffieldundef{year}{}{%
+    \addcomma\space
+    \printfield{year}%
+  }%
+  \iffieldundef{howpublished}{}{%
+    \addcomma\space
+    \printfield{howpublished}%
+  }%
+  \iffieldundef{urldate}{}{%
+    \addcomma\space
+    \printtext{（参照 }\printfield{urldate}\printtext{）}%
+  }%
+  \printtext{．}%
+  \finentry
+}
