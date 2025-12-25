@@ -1,6 +1,9 @@
-\usepackage[backend=biber,style=numeric, style=frontmatter/jpa]{biblatex}
-\addbibresource{backmatter/references.bib}
-% \usepackage[dvipdfmx,hidelinks]{hyperref} % ハイパーリンク対応，リンクを隠す
+\usepackage[
+  backend=biber,
+  bibstyle=backmatter/kucivil,
+  citestyle=backmatter/kucivil
+]{biblatex}
+\usepackage[hidelinks]{hyperref} % LuaLaTeX(PDF mode) 用
 \usepackage{amsmath,amssymb} % 数式作成
 \usepackage{array} % 数式作成
 \usepackage{booktabs} % 表に横罫線を引く
