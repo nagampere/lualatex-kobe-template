@@ -18,7 +18,7 @@
             ]
         },
         {
-            // 日本語用LuaLaTeX+pbibtexレシピ
+            // 日本語用LuaLaTeX+biberレシピ
             "name": "lualatex+biber",
             "tools": [
                 "lualatex"
