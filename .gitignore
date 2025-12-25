@@ -3,6 +3,7 @@
 /output/**
 *.aux
 *.bbl
+*.bbl-SAVE-ERROR
 *.blg
 *.dvi
 *.idx
