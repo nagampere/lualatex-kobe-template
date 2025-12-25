@@ -52,8 +52,8 @@
     }%
 }
 
-% book の translator のフォーマットを日本語と英語に分けてカスタマイズ
-\DeclareNameFormat[book]{translator}{%
+% book,incollection の translator のフォーマットを日本語と英語に分けてカスタマイズ
+\DeclareNameFormat[book,incollection]{translator}{%
   \usebibmacro{ifjplang}
     {%
       % 日本語：「山田太郎，鈴木一郎」のように表示
@@ -81,6 +81,16 @@
     % 英語：イタリック維持（太字は付けない）
     {\mkbibemph{#1}}  
 }
+% incollection の title の太字・イタリック無効化
+\DeclareFieldFormat[incollection]{title}{#1}
+% incollection の booktitle のフォーマットを日本語と英語に分けてカスタマイズ
+\DeclareFieldFormat[incollection]{booktitle}{%
+  \usebibmacro{ifjplang}
+    % 日本語：装飾なし（太字・イタリック無効）
+    {#1}
+    % 英語：イタリック維持（太字は付けない）
+    {\mkbibemph{#1}}  
+}
 % misc の title の “ ”や太字 を消す
 \DeclareFieldFormat[misc]{title}{#1}
 
@@ -92,6 +102,9 @@
     % 英語：イタリック維持（太字は付けない）
     {\mkbibemph{#1}}  
 }
+
+% book,incollection の volume のフォーマットを「Vol.xx」の形式にする
+\DeclareFieldFormat[book,incollection]{volume}{\text{Vol.}#1}
 
 % howpublished(URL) のフォーマットを、文書中で折り返して見やすくし、文字タイプを通常にする
 \DeclareFieldFormat{howpublished}{\nolinkurl{#1}}
@@ -106,7 +119,7 @@
 
 
 %%% bibliography drivers %%%
-% @article を「著者：タイトル, 誌名, Vol. xx, No. x, pp. yy–zz, yyyy．」
+% @article を「著者：タイトル, 誌名, Vol.xx, No.x, pp.yy–zz, yyyy．」
 \DeclareBibliographyDriver{article}{%
   \printnames{author}%
   \printtext{：}\space
@@ -131,7 +144,7 @@
   \finentry
 }
 
-% @book を「著者（訳者）：タイトル, 出版社, pp. yy–zz, yyyy．」
+% @book を「著者（訳者）：タイトル, 出版社, ww ed., Vol.xx, pp.yy–zz, yyyy．」
 \DeclareBibliographyDriver{book}{%
   \printnames{author}%
   \ifnameundef{translator}{}{% 
@@ -143,6 +156,46 @@
   \printfield{title}%
   \addcomma\space
   \printlist{publisher}%
+  \iffieldundef{edition}{}{%
+    \addcomma\space
+    \printfield{edition}%
+  }%
+  \iffieldundef{volume}{}{%
+    \addcomma\space
+    \printfield{volume}%
+  }%
+  \iffieldundef{pages}{}{%
+    \addcomma\space
+    \printfield{pages}%
+  }%
+  \addcomma\space
+  \printfield{year}%
+  \printtext{．}%
+  \finentry
+}
+
+% @incollection を「著者（訳者）：セクションタイトル, タイトル, 出版社, ww ed., Vol.xx, pp.yy–zz, yyyy．」
+\DeclareBibliographyDriver{incollection}{%
+  \printnames{author}%
+  \ifnameundef{translator}{}{% 
+    \printtext{（}%
+    \printnames{translator}%
+    \printtext{訳）}%
+  }%
+  \printtext{：}\space
+  \printfield{title}%
+  \addcomma\space
+  \printfield{booktitle}%
+  \addcomma\space
+  \printlist{publisher}%
+  \iffieldundef{edition}{}{%
+    \addcomma\space
+    \printfield{edition}%
+  }%
+  \iffieldundef{volume}{}{%
+    \addcomma\space
+    \printfield{volume}%
+  }%
   \iffieldundef{pages}{}{%
     \addcomma\space
     \printfield{pages}%
