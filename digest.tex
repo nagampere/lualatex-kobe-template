@@ -1,4 +1,4 @@
-\documentclass[a4paper, 10.5pt, twocolumn, dvipdfmx]{jarticle}
+\documentclass[a4paper, 11pt]{ltjreport}
 
 \input{preamble/packages.tex} % パッケージ読み込み
 \input{digest/settings.tex}   % ドキュメント設定
@@ -13,8 +13,8 @@
 	\end{center}
 
 	\begin{flushright}
-		\kintou{6zw}{市民工学専攻}：神戸　太郎\\
-		\kintou{6zw}{指導教員}： 灘　和美
+		\kintou{6em}{市民工学専攻}：神戸　太郎\\
+		\kintou{6em}{指導教員}： 灘　和美
 	\end{flushright}
 ]
 
@@ -38,11 +38,10 @@
 \section{モデルの定義}
 本研究では，社会資本投資が地域経済に与える影響を実証的に分析するため，地域間の付加価値成長率および全要素生産性（TFP）を従属変数とした回帰分析を行う．独立変数としては，社会資本投資額や社会資本ストック指標を中心に，各地域の経済特性を反映する補足変数（人口密度，産業構造，教育水準など）を組み込むことで，投資効果の多面的な評価を可能にする．
 
-
-地域 \( i \) における生産量 \( Y_i \) は次のように定義する：
+地域 $i$ における生産量 $Y_i$ は次のように定義する：
 
 \[
-	Y_i = A_i \cdot K_i^\alpha \cdot L_i^\beta \cdot G_i^\gamma
+Y_i = A_i \cdot K_i^\alpha \cdot L_i^\beta \cdot G_i^\gamma
 \]
 
 ここで：
@@ -58,7 +57,7 @@
 
 \subsection{社会資本ストックの動学的変化}
 
-社会資本ストック \( G_i \) は，時間 \( t \) における社会資本投資 \( I_{G,i}(t) \) によって次のように変化する：
+社会資本ストック $G_i$ は，時間 $t$ における社会資本投資 $I_{G,i}(t)$ によって次のように変化する：
 
 \[
 	G_i(t+1) = (1-\delta) \cdot G_i(t) + I_{G,i}(t)
@@ -73,7 +72,7 @@
 
 \subsection{TFPへの波及効果}
 
-全要素生産性 \( A_i \) は，以下のように社会資本ストックの外部効果を含む：
+全要素生産性 $A_i$は，以下のように社会資本ストックの外部効果を含む：
 
 \[
 	A_i = A_0 \cdot e^{\phi \cdot G_i}
@@ -112,8 +111,7 @@
 政策的には，社会資本投資を戦略的に配分することで，地域間格差の是正や持続可能な経済成長を促進できる可能性が示唆された．また，社会資本投資の効果を最大化するためには，投資対象の種類や質，さらには人的資本や情報通信基盤との相乗効果を考慮する必要がある．
 
 
-\setcitestyle{authoryear}
-\bibliographystyle{backmatter/kucivil}
-\bibliography{backmatter/references}
+\section*{\small 参考文献}
+\printbibliography[heading=none]
 
 \end{document}
