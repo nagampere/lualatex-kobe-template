@@ -1,6 +1,4 @@
 \makeatletter % "@"記号の有効化
-
-\makeindex
 \setcounter{tocdepth}{2}
 
 %%% セクション構成の設定 %%%
@@ -12,11 +10,15 @@
 }
 
 \renewcommand{\subsection}{% サブセクション表記の設定
-	\@startsection {subsection}{1}{\z@}%
+	\@startsection {subsection}{2}{\z@}%
 	{-2.5ex plus -1ex minus -.2ex} % 前の行間を縮める
 	{1.5ex plus .2ex}% 後の行間を縮める
 	{\bf}% サブセクションのフォント設定
 }
+
+% ltjreport (report系) で \chapter を使わずに \section を使うと「0.1」になるため、
+% digest では節番号を「1,2,3...」形式にする。
+\renewcommand{\thesection}{\arabic{section}}
 
 
 %%% ページレイアウトの設定 %%%
@@ -29,7 +31,7 @@
 \fi
 \setlength{\headheight}{1mm} % ヘッダの高さ
 \setlength{\headsep}{1mm} % ヘッダと本文の間隔
-\setlength{\textwidth}{48zw} % 1行48文字（二段組の場合は24文字）
+\setlength{\textwidth}{48em} % 1行48文字（二段組の場合は24文字）
 \setlength{\textheight}{46\baselineskip} % 1ページ42行程度（適宜微調整して下さい）
 \addtolength{\textheight}{\topskip} % 本文とフッタの間隔
 % \setlength{\parindent}{1em} % 段落のインデントを1文字分に設定
@@ -56,10 +58,8 @@
 
 
 %%% 引用スタイルの設定 %%%
-\renewcommand{\bibname}{参考文献} % 参考文献のタイトル
-\setcitestyle{super,sort&compress,citesep={,},open={},close={)}}  % 参考文献の引用形式(natbib)
-\setlength{\bibsep}{0pt} % 参考文献リストの行間を狭くする
-% \renewcommand{\bibsection}{\chapter*{\bibname}}
+\addbibresource{backmatter/references.bib} % .bibファイルのパス
+\urlstyle{same} % URLのフォントを本文と同じにする
 
 %%% 参考文献リストの行間をさらに狭くする設定 %%%
 \renewenvironment{thebibliography}[1]
