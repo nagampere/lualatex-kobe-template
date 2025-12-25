@@ -1,4 +1,4 @@
-{
+{    
     // ------------ LaTeX ここから -----------------
     // 設定: LaTeX Workshop
     // LaTeX Workshop ではビルド設定を「Tool」と「Recipe」という2つで考える
@@ -7,97 +7,224 @@
     //           tools の中で利用される Tool は "latex-workshop.latex.tools" で定義されている必要がある。
     "latex-workshop.latex.recipes": [
         {
-        //論文用レシピ
-        "name": "uplatex+pbibtex+dvipdfmx",
-        "tools": [
-            "uplatex",
-            "pbibtex",
-            "uplatex",
-            "dvipdfmx",
-            // "move",
-            "delete"
-        ]
+            // LuaLaTeX レシピ
+            "name": "lualatex",
+            "tools": [
+                "lualatex"
+                // ,"lualatex"
+                // ,"mvpdf"
+                // ,"mvlog"
+                // ,"delete"
+            ]
         },
         {
-        //要旨用レシピ
-        "name": "uplatex+dvipdfmx",
-        "tools": [
-            "uplatex",
-            "dvipdfmx",
-            // "move",
-            "delete"
-        ]
+            // 日本語用LuaLaTeX+pbibtexレシピ
+            "name": "lualatex+biber",
+            "tools": [
+                "lualatex"
+                ,"biber"
+                ,"lualatex"
+                ,"lualatex"
+                // ,"delete"
+            ]
+        },
+        {
+            // 英語用LuaLaTeX+bibtexレシピ
+            "name": "lualatex+bibtex",
+            "tools": [
+                "lualatex"
+                ,"bibtex"
+                ,"lualatex"
+                ,"lualatex"
+                // ,"delete"
+            ]
+        },
+        {
+            // 日本語用pLaTex+pbibtexレシピ
+            "name": "platex+pbibtex+dvipdfmx",
+            "tools": [
+                "platex"
+                ,"pbibtex"
+                ,"platex"
+                ,"dvipdfmx"
+                // ,"delete"
+            ]
+        },
+        {
+            "name": "pdflatex",
+            "tools": [
+                "pdflatex"
+                ,"pdflatex"
+                // ,"mvpdf"
+                // ,"mvlog"
+                // ,"delete"
+            ]
+        },
+        {
+            // 日本語用pLaTex+biberレシピ
+            "name": "platex+biber+dvipdfmx",
+            "tools": [
+                "platex"
+                ,"biber"
+                ,"platex"
+                ,"dvipdfmx"
+                // ,"delete"
+            ]
+        },
+        {
+            "name": "platex+dvipdfmx",
+            "tools": [
+                "platex"
+                ,"dvipdfmx"
+                // ,"delete"
+            ]
         }
     ],
     "latex-workshop.latex.tools": [
         {
-        "name": "uplatex",
-        "command": "uplatex",
-        "args": [
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-file-line-error",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-halt-on-error",
+                "-output-directory=%OUTDIR%",
+                "%DOCFILE%.tex"
+            ],
+            "env": {}
+        },
+        {
+            "name": "lualatex",
+            "command": "lualatex",
+            "args": [
+                "-file-line-error",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-halt-on-error",
+                "-output-directory=%OUTDIR%",
+                "%DOCFILE%.tex"
+            ],
+            "env": {}
+        },
+        {
+            "name": "latex",
+            "command": "latex",
+            "args": [
+            "-file-line-error",
             "-synctex=1",
             "-interaction=nonstopmode",
-            "-file-line-error",
-            "-kanji=utf8",
-            "-shell-escape",
+            "-halt-on-error",
+            "-output-directory=%OUTDIR%",
             "%DOCFILE%.tex"
-        ]
+            ],
+            "env": {}
         },
         {
-        "name": "dvipdfmx",
-        "command": "dvipdfmx",
-        "args": [
-            "%DOCFILE%.dvi"
-        ]
+            "name": "platex",
+            "command": "platex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-kanji=utf8",
+                "-shell-escape",
+                "%DOCFILE%.tex"
+            ]
         },
         {
-        "name": "pbibtex",
-        "command": "pbibtex",
-        "args": [
-            // "-kanji=utf8",
-            "%DOCFILE%"
-        ]
+            "name": "pbibtex",
+            "command": "pbibtex",
+            "args": [
+                "-kanji=utf8",
+                "%DOCFILE%"
+            ]
         },
         {
-        "name": "move",
-        "command": "mv",
-        "args": [
-            "%DOCFILE%.pdf",
-            "%OUTDIR%"
-        ]
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ]
         },
         {
-        "name": "mendex",
-        "command": "mendex",
-        "args": [
-            "-r",
-            "-c",
-            "-g",
-            "-s",
-            "dot.ist",
-            "-p",
-            "any",
-            "%DOCFILE%.idx"
-        ]
+            "name": "biber",
+            "command": "biber",
+            "args": [
+                "--output-safechars",
+                "--input-encoding=utf8",
+                "--output-directory=%OUTDIR%",
+                "%DOCFILE%"
+            ]
         },
         {
-        "name": "delete",
-        "command": "rm",
-        "args": [
-            "-f",
-            "%DOCFILE%.aux",
-            "%DOCFILE%.bbl",
-            "%DOCFILE%.blg",
-            "%DOCFILE%.dvi",
-            "%DOCFILE%.idx",
-            "%DOCFILE%.ilg",
-            "%DOCFILE%.ind",
-            "%DOCFILE%.lof",
-            "%DOCFILE%.log",
-            "%DOCFILE%.lot",
-            "%DOCFILE%.toc",
-            "%DOCFILE%.synctex.gz",
-            "%DOCFILE%.out"
-        ]
+            "name": "dvipdfmx",
+            "command": "dvipdfmx",
+            "args": [
+                "%DOCFILE%.dvi"
+            ]
+        },
+        {
+            "name": "mendex",
+            "command": "mendex",
+            "args": [
+                "-r",
+                "-c",
+                "-g",
+                "-s",
+                "dot.ist",
+                "-p",
+                "any",
+                "%DOCFILE%.idx"
+            ]
+        },
+        {
+            "name": "mvpdf",
+            "command": "mv",
+            "args": [
+                "%DOCFILE%.pdf",
+                "%OUTDIR%"
+            ]
+        },
+        {
+            "name": "mvlog",
+            "command": "mv",
+            "args": [
+                "%DOCFILE%.aux",
+                "%DOCFILE%.bbl",
+                "%DOCFILE%.blg",
+                "%DOCFILE%.dvi",
+                "%DOCFILE%.idx",
+                "%DOCFILE%.ilg",
+                "%DOCFILE%.ind",
+                "%DOCFILE%.lof",
+                "%DOCFILE%.log",
+                "%DOCFILE%.lot",
+                "%DOCFILE%.toc",
+                "%DOCFILE%.synctex.gz",
+                "%DOCFILE%.out",
+                "%OUTDIR%/."
+            ]
+        },
+        {
+            "name": "delete",
+            "command": "rm",
+            "args": [
+                "-f",
+                "%DOCFILE%.aux",
+                "%DOCFILE%.bbl",
+                "%DOCFILE%.blg",
+                "%DOCFILE%.dvi",
+                "%DOCFILE%.idx",
+                "%DOCFILE%.ilg",
+                "%DOCFILE%.ind",
+                "%DOCFILE%.lof",
+                "%DOCFILE%.log",
+                "%DOCFILE%.lot",
+                "%DOCFILE%.toc",
+                "%DOCFILE%.synctex.gz",
+                "%DOCFILE%.out"
+            ]
         }
     ],
     // latex-workshop.latex.magic.args: マジックコメント付きの LaTeX ドキュメントをビルドする設定
@@ -201,7 +328,7 @@
     },
     // 使用パッケージのコマンドや環境の補完を有効にする
     "latex-workshop.intellisense.package.enabled": true,
-    // 生成ファイルを現在のディレクトリに吐き出す
+    // 生成ファイルを現在のディレクトリに吐き出す（outputにする場合は"output"に変更）
     "latex-workshop.latex.outDir": ".",
     "latex-workshop.message.log.show": true,
     "editor.unicodeHighlight.allowedCharacters": {
@@ -209,9 +336,7 @@
         "．": true
     },
     // レシピの設定、デフォルトで"platex"レシピを実行する
-    "latex-workshop.latex.recipe.default": "first",
-
-
+    "latex-workshop.latex.recipe.default": "lastUsed",
     // latexindentを使ってformattingする
     // formattingのショートカットは「Shift + option + F」
     "latex-workshop.formatting.latex": "latexindent",
