@@ -179,7 +179,7 @@ natbibとは、文献管理を目的としたlatexライブラリの一つで、
   - "super"で、右肩上がり数字(山田 (2020) <sup>3\)</sup> )にする。
   - "open={},close={)}"で、「3\)」のスタイルにする。
 - ```\setcitestyle{authoryear}```
-- ```\bibliographystyle{backmatter/kucivil.bst} ```
+- ```\bibliographystyle{3_backmatter/kucivil.bst} ```
   - 設定の基準は[経済学におけるBibTeXの利用](https://qiita.com/shiro_takeda/items/92adf0b20c501548355e)
   - 神戸大学市民工学の書式に変更
 
@@ -205,22 +205,22 @@ natbibとは、文献管理を目的としたlatexライブラリの一つで、
 latex-template
 ├── main.tex                   # 本文のメインファイル（全体をまとめる）
 ├── digest.tex                 # 要旨のメインファイル
-├── preamble
+├── 0_preamble
 │   ├── packages.tex           # 使用するパッケージ
 │   ├── settings.tex           # ドキュメント設定（章構成、引用スタイルなど）
 │   └── macros.tex             # カスタムコマンド・マクロ定義
-├── frontmatter
+├── 1_frontmatter
 │   ├── title.tex              # タイトル
 │   ├── abstractEN.tex         # 英文要旨
 │   ├── abstractJP.tex         # 和文要旨
 │   └── contents.tex           # 目次・図表目次
-├── mainmatter                 # 各章ごとの内容
+├── 2_mainmatter                 # 各章ごとの内容
 │   ├── chapter1.tex
 │   ├── chapter2.tex
 │   ├── chapter3.tex
 │   ├── chapter4.tex
 │   └── chapter5.tex
-├── backmatter
+├── 3_backmatter
 │   ├── citations.tex          # 参考文献リスト
 │   ├── kucivil.bst            # 引用スタイルの設定ファイル
 │   ├── references.bib         # bibtexファイル
